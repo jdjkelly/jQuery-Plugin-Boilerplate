@@ -1,99 +1,112 @@
 // keep all your code in a closure
 (function($)
 {
-    // provide default settings
-    var defaultSettings = {
-        position    : 'mouse',
-        color       : 'black'
-    };
+	// provide default settings
+	var defaultSettings = {
+		position	: 'mouse',
+		color		: 'black'
+	};
 
-    // name your plugin - try to make it unique
-    $.fn.wTooltip = function(option, settings)
-    {
-        // check if user is setting/getting properties manually after plugin creation
-        if(typeof option === 'object')
-        {
-            settings = option;
-        }
-        else if(typeof option == 'string')
-        {
-            var data = this.data('_wTooltip');
+	// name your plugin - try to make it unique
+	$.fn.wTooltip = function(option, settings) {
+		
+		// check if user is setting/getting properties manually after plugin creation
+		if(typeof option === 'object') {
 
-            // this will check if plugin has already been initialized for this element
-            if(data)
-            {
-                if(defaultSettings[option] !== undefined)
-                {
-                    if(settings !== undefined){
-                        if(option == 'title') data.content.html(settings);
-                        data.settings[option] = settings;
-                        return true;
-                    }
-                    else return data.settings[option];
-                }
-                else return false;
-            }
-            else return false;
-        }
+			settings = option;
 
-        // extend user settings with default settings
-        settings = $.extend({}, defaultSettings, settings || {});
+		} else if(typeof option == 'string') {
+			
+			var data = this.data('_wTooltip');
 
-        // iterate through all elements and return them to maintain jQuery method chaining
-        return this.each(function()
-        {
-            var elem = $(this);
+			// this will check if plugin has already been initialized for this element
+			if(data) {
+				
+				if(defaultSettings[option] !== undefined) {
+					
+					if(settings !== undefined) {
+						
+						if(option == 'title') {
+							
+							data.content.html(settings);
+						}
+						
+						data.settings[option] = settings;
+						
+						return true;
+					}
+					else {
+						
+						return data.settings[option];
+					}
+				}
+			}
+			
+			return false;
+		}
 
-            // create copy of settings object allowing us to make individual adjustments
-            // this ensures that only values for current element are changed
-            var $settings = jQuery.extend(true, {}, settings);
-            $settings.title = settings.title || elem.attr('title') || 'No title set';
+		// extend user settings with default settings
+		settings = $.extend({}, defaultSettings, settings || {});
 
-            // create a tooltip object
-            var tooltip = new Tooltip($settings);
+		// iterate through all elements and return them to maintain jQuery method chaining
+		return this.each(function() {
 
-            // we would typically run our generation code here
-            tooltip.generate();
+			var elem = $(this);
 
-            // run some code here
-            // try to keep as much of the main code in the prototype methods as possible
-            // focus on just setting up the plugin and calling proper methods from here
+			// create copy of settings object allowing us to make individual adjustments
+			// this ensures that only values for current element are changed
+			$settings = jQuery.extend(true, {}, settings);
+			$settings.title = settings.title || elem.attr('title') || 'No title set';
 
-            // store the tooltip object for later reference - setters/getters
-            elem.data('_wTooltip', tooltip);
-        });
-    }
+			// create a tooltip object
+			var tooltip = new Tooltip($settings);
 
-    // create our tooltip "class"
-    // this will store the unique individual properties for each tooltip
-    function Tooltip(settings)
-    {
-        this.tooltip = null;
-        this.settings = settings;
+			// we would typically run our generation code here
+			tooltip.generate();
 
-        return this;
-    }
+			// run some code here
+			// try to keep as much of the main code in the prototype methods as possible
+			// focus on just setting up the plugin and calling proper methods from here
 
-    // prototype the tooltip class
-    // this will contain methods shared amongst all tooltips
-    // DO NOT keep any unique tooltip properties here
-    Tooltip.prototype = 
-    {
-        generate: function()
-        {
-            // use local reference of this
-            // this will be important when using in other closures like event closures
-            var $this = this;
+			// store the tooltip object for later reference - setters/getters
+			elem.data('_wTooltip', tooltip);
+		});
+	};
 
-            // return the tooltip in case its already been defined for the current element 
-            if($this.tooltip) return $this.tooltip;
-            
-            //code
-        },
+	// create our tooltip "class"
+	// this will store the unique individual properties for each tooltip
+	function Tooltip(settings) {
+		
+		this.tooltip = null;
+		this.settings = settings;
 
-        someFunc: function()
-        {
-            //code
-        }
-    }
+		return this;
+	}
+
+	// prototype the tooltip class
+	// this will contain methods shared amongst all tooltips
+	// DO NOT keep any unique tooltip properties here
+	Tooltip.prototype = {
+		
+		generate: function() {
+			
+			// use local reference of this
+			// this will be important when using in other closures like event closures
+			var $this = this;
+
+			// return the tooltip in case its already been defined for the current element 
+			if($this.tooltip) {
+				
+				return $this.tooltip;
+			}
+			
+			//code
+		},
+
+		someFunc: function() {
+			
+			//code
+		}
+	};
+	
 })(jQuery);
